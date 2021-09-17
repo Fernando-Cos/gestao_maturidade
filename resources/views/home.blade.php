@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-<h3>Bem vind{{ Auth::user()->gender == 'female' ? 'a' : 'o' }}, <b>{{ strtoupper(current(explode(" ", Auth::user()->name))) }}</b></h3>
+<h3>Bem vindo{{ Auth::user()->gender == 'female' ? 'a' : 'o' }}, <b>{{ strtoupper(current(explode(" ", Auth::user()->name))) }}</b></h3>
 
 <div class="row">
     <div class="col-md-5">
