@@ -15,11 +15,11 @@ class CreateTbDiagnosticoHeadersTable extends Migration
     {
         Schema::create('tb_diagnostico_headers', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_unidade_fk');
-            $table->integer('id_modelo_header_fk');
+            $table->foreignId('id_unidade_fk');
+            $table->foreignId('id_modelo_header_fk');
             $table->integer('total_pontos');
             $table->decimal('nivel_maturidade', 10,4);
-            $table->integer('id_usuario_fk');
+            $table->foreignId('id_usuario_fk');
             $table->timestamps();
         });
     }

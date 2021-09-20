@@ -17,10 +17,8 @@ class CreateTbAtividadesTable extends Migration
             $table->id();
             $table->string('decricao');
             $table->char('ativo', 3);
-            $table->integer('id_resposta_fk');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
-
+            $table->foreignId('id_resposta_fk');
+            $table->timestamps();
         });
     }
 

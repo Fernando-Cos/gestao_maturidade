@@ -15,9 +15,9 @@ class CreateTbDiagnosticoBodiesTable extends Migration
     {
         Schema::create('tb_diagnostico_bodies', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_diagnostico_header_fk');
-            $table->integer('id_pergunta_fk');
-            $table->integer('id_resposta_fk');
+            $table->foreignId('id_diagnostico_header_fk');
+            $table->foreignId('id_pergunta_fk');
+            $table->foreignId('id_resposta_fk');
             $table->timestamps();
         });
     }
