@@ -15,9 +15,9 @@ class CreateTbUnidadesareasTable extends Migration
     {
         Schema::create('tb_unidadesareas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_unidade_fk');
-            $table->foreignId('id_area_fk');
-            $table->foreignId('id_subarea_fk');
+            $table->foreignId('id_unidade_fk')->unique();
+            $table->foreignId('id_area_fk')->unique();
+            $table->foreignId('id_subarea_fk')->unique();
         });
     }
 

@@ -17,7 +17,7 @@ class CreateTbUsuariosTable extends Migration
             $table->id();
             $table->string('nome', 30);
             $table->string('email', 20)->unique();
-            $table->integer('cpf');
+            $table->integer('cpf')->unique();
             $table->foreignId('id_unidade_fk');
             $table->foreignId('id_area_fk');
             $table->foreignId('id_subarea_fk');

@@ -15,7 +15,7 @@ class CreateTbResponsaveisTable extends Migration
     {
         Schema::create('tb_responsaveis', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
+            $table->string('nome', 30);
             $table->foreignId('id_unidade_fk');
             $table->foreignId('id_subarea_fk');
             $table->timestamps();

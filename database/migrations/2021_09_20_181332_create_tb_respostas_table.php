@@ -15,7 +15,7 @@ class CreateTbRespostasTable extends Migration
     {
         Schema::create('tb_respostas', function (Blueprint $table) {
             $table->id();
-            $table->text('descricao', 100);
+            $table->text('descricao', 200);
             $table->tinyInteger('nota');
             $table->foreignId('id_pergunta_fk');
             $table->char('ativo', 3)->nullable();
