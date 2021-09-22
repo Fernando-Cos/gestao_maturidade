@@ -15,7 +15,8 @@ class CreateTbProgramasTable extends Migration
     {
         Schema::create('tb_programas', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('nome', 30);
+            $table->string('descricao', 200);
         });
     }
 
