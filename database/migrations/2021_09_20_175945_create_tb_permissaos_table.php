@@ -15,7 +15,7 @@ class CreateTbPermissaosTable extends Migration
     {
         Schema::create('tb_permissaos', function (Blueprint $table) {
             $table->id();
-            $table->text('descricao')->nullable();
+            $table->text('descricao');
             $table->timestamps();
         });
     }

@@ -15,8 +15,8 @@ class CreateTbUsuarioFuncaosTable extends Migration
     {
         Schema::create('tb_usuario_funcaos', function (Blueprint $table) {
             $table->id();
-            
-            $table->timestamps();
+            $table->foreignId('id_funcao');
+            $table->foreignId('id_usuario');
         });
     }
 
