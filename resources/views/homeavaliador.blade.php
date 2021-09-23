@@ -45,7 +45,7 @@
     <?php
 
     use Illuminate\Support\Facades\Auth;
-    $usuario = App\Models\User::find(Auth::user()->id);
+    $usuario = App\Models\tb_usuario::findOrFail(Auth::user()->id);
     $unidade = \App\Models\tb_unidades::findOrFail($usuario->id_unidade_fk);
     $unidadeareas = \App\Models\tb_unidadesareas::where('id_unidade_fk',$unidade->id)->get();
 
@@ -66,12 +66,23 @@
 
                 <?php
 
-                $area_anterior=0;
+                $gestor = "";
 
+                if ($usuario->id_permissao_fk == \App\Utils\ConstUtil::PERM_GESTOR_UNIDADE_ID){ //gestor unidade, visualiza todas as áreas
+                    $gestor = 'unidade';
+                }elseif ($usuario->id_permissao_fk == \App\Utils\ConstUtil::PERM_GESTOR_AREA_ID){//gestor da area, visualiza apenas sua área
+                    $area_gestor = $usuario->id_area_fk;
+                    $gestor = "area";
+                }elseif ($usuario->id_permissao_fk == \App\Utils\ConstUtil::PERM_GESTOR_SUBAREA_ID){//gestor de subárea
+                    $subarea_gestor = $usuario->id_subarea_fk;
+                    $gestor = 'subarea';
+                }
+
+                $area_anterior=0;
 
                 foreach ($unidadeareas as $ua){
 
-                    $estilo = "";
+                    $estilo = "pointer-events: none;opacity: 0.4;";
 
                     if($area_anterior!=$ua->id_area_fk){
                         $area = \App\Models\tb_area::findOrFail($ua->id_area_fk);
@@ -81,10 +92,14 @@
                     $subarea = \App\Models\tb_subarea::findOrFail($ua->id_subarea_fk);
 
                     //habilita a sub área somente se tiver permissão e se o modelo de questões estiver completo para fazer o diagnostico
-                   // echo \App\Models\tb_diagnostico_header::modeloCompleto($ua->id_area_fk,$ua->id_subarea_fk).'<br>';
+                    if ((
+                            ($gestor=="unidade")  ||
+                            ($gestor=="area" && $area_gestor == $ua->id_area_fk) ||
+                            ($gestor=="subarea" && $subarea_gestor == $ua->id_subarea_fk)
+                        )
+                        && (\App\Models\tb_diagnostico_header::modeloCompleto($ua->id_area_fk,$ua->id_subarea_fk)==0)){
+                        $estilo = "";//desabilita o ícone
 
-                    if (\App\Models\tb_diagnostico_header::modeloCompleto($ua->id_area_fk,$ua->id_subarea_fk)==0){
-                        $estilo = "pointer-events: none;opacity: 0.4;";//desabilita o ícone
                     } ?>
 
                     <div class="form-group col-sm-2 col-md-2 col-lg-2 text-center imagem" id="divImagem{{$subarea->id}}" style="{{$estilo.';float:left;'}}" >

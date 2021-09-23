@@ -55,4 +55,6 @@ class tb_diagnostico_header extends Model
         }
     }
 
+
+
 }

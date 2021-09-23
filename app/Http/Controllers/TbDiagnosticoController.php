@@ -201,4 +201,28 @@ class TbDiagnosticoController extends Controller {
 
     }
 
+
+    //recupera o modelo de perguntas e respostas a ser usado para a sub área selecionada para o diagnostico
+    public function resultModeloArea(Request $request)
+    {
+
+        $sql = "SELECT a.id as id_modelo_header, b.id as id_modelo_body, c.id as id_pergunta, c.descricao as pergunta,
+                        d.id as id_resposta, d.descricao as resposta, e.id as id_atividade, e.descricao as atividade, d.nota, a.id_parametro_fk
+                    FROM tb_modelo_header a, tb_modelo_body b, tb_perguntas c, tb_respostas d, tb_atividades e
+                    WHERE a.id_subarea_fk = ".$request->id_subarea_fk."
+                      and a.ativo = 'Sim'
+                      and b.id_modelo_header_fk = a.id
+                      and c.id = b.id_pergunta_fk
+                      and d.id = b.id_resposta_fk
+                      and e.id = b.id_atividade_fk
+                    ORDER BY c.descricao, d.nota";
+
+
+        $modelos = DB::select($sql);
+
+        return response()->json($modelos);
+
+    }
+
+
 }

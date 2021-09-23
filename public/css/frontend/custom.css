@@ -73,17 +73,18 @@ body{
     width: 20px;
     font-size: 15px;
     font-weight: 200;
-    padding: 15px;
-    background-color: #d9edf7;
-    -webkit-box-shadow: 1px 1px 10px 0 #5f3f3f;
-    -moz-box-shadow: 1px 1px 10px 0 #5f3f3f;
-    box-shadow: 1px 1px 10px 0 #5f3f3f;
-    text-shadow: 1px 1px 10px #5f3f3f;
-    border: solid #337FED 1px;
+    padding: 10px;
+    background-color: #B8D9A0;
+    -webkit-box-shadow: 1px 1px 10px 0 #B8D9A0;
+    -moz-box-shadow: 1px 1px 10px 0 #B8D9A0;
+    box-shadow: 1px 1px 10px 0 #B8D9A0;
+    text-shadow: 1px 1px 10px #B8D9A0;
+    border: solid #16731C 1px;
     text-decoration: none;
     display: inline-block;
     cursor: pointer;
     text-align: center;
+    margin-top: -10px;
 }
 /*
 .btn_opcoes_checked {
