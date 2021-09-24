@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,4 +22,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('homeavaliador', [App\Http\Controllers\HomeController::class, 'index'])->name('homeavaliador');
 Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
+
+
+//DIAGNÓSTICOS
+//Route::resource('diagnostico', 'TbDiagnosticoController');
+Route::post('/diagnostico/exibirPerguntas', [App\Http\Controllers\TbDiagnosticoController::class, 'exibirPerguntas'])->name('exibirPerguntas');
+Route::get('/diagnostico/atualizarIndices/{atualizar}/{id_area_atualizar?}', [App\Http\Controllers\TbDiagnosticoController::class,'atualizarIndices'])->name('atualizarIndices');
+Route::post('/diagnostico/salvarRespostas', [App\Http\Controllers\TbDiagnosticoController::class,'salvarRespostas']);
+Route::post('/diagnostico/consultarPontosFortesFracos', [App\Http\Controllers\TbDiagnosticoController::class,'consultarPontosFortesFracos'])->name('consultarPontosFortesFracos');
+Route::post('/diagnostico/resultModeloArea',[App\Http\Controllers\TbDiagnosticoController::class,'resultModeloArea'])->name('resultModeloArea');

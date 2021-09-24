@@ -5,15 +5,6 @@
 @section('content')
 
 
-   <?php
-
-       $usuario = \App\Models\tb_usuario::findOrFail(Auth()->user()->id);
-       $unidade = \App\Models\tb_unidades::findOrFail($usuario->id_unidade_fk);
-       $subareas = \App\Models\tb_subarea::findOrFail($subarea);
-       $area = \App\Models\tb_area::findOrFail($subareas->id_area_fk);
-
-   ?>
-
     <style>
 
     /* não exibe as opções dos inputs radios para as respostas*/
@@ -29,11 +20,11 @@
     input[type="radio"]:checked+label {
         border: solid #16731C 1px;
         background: #16731C;
-        background-image: -webkit-linear-gradient(top, #16731C, #3D94F6);
-        background-image: -moz-linear-gradient(top, #16731C, #3D94F6);
-        background-image: -ms-linear-gradient(top, #16731C, #3D94F6);
-        background-image: -o-linear-gradient(top, #16731C, #3D94F6);
-        background-image: -webkit-gradient(to bottom, #16731C, #3D94F6);
+        background-image: -webkit-linear-gradient(top, #16731C, #16731C);
+        background-image: -moz-linear-gradient(top, #16731C, #16731C);
+        background-image: -ms-linear-gradient(top, #16731C, #16731C);
+        background-image: -o-linear-gradient(top, #16731C, #16731C);
+        background-image: -webkit-gradient(to bottom, #16731C, #16731C);
         -webkit-border-radius: 20px;
         -moz-border-radius: 20px;
         border-radius: 20px;
@@ -50,7 +41,16 @@
 
     </style>
 
-         <!-- FORM DO HEADER -->
+
+
+    <?php
+
+    $usuario = \App\Models\tb_usuario::findOrFail(Auth()->user()->id);
+    $unidade = \App\Models\tb_unidades::findOrFail($usuario->id_unidade_fk);
+    $subareas = \App\Models\tb_subarea::findOrFail($subarea);
+    $area = \App\Models\tb_area::findOrFail($subareas->id_area_fk);
+
+    ?>
 
        <div class="form-group col-sm-12 col-md-12 col-lg-12 text-center" STYLE="color: #16731C">
            <h4>DIAGNÓSTICO</h4>
@@ -60,13 +60,13 @@
        <div class="form-group col-sm-12 col-md-12 col-lg-12 text-center" id="divArea">
            @include('layouts.frontend.cabecalho_unidade')
            <h5>{{strtoupper($area->nome)}}</h5>
-           <img src="{{ asset('storage/imagens/'.$subareas->imagem)}}" width="30" height="30" >
+           <img src="{{ asset('storage/imagens/'.$subareas->imagem)}}" width="40" height="40" >
            <h5>{{strtoupper($subareas->nome)}}</h5>
         </div>
 
         <div class="form-group col-sm-12 col-md-12 col-lg-12 text-center">
 
-            <form class="form-group col-sm-12 col-md-12 col-lg-12"  id="formDiagnostico">
+            <form class="form-group col-sm-12 col-md-12 col-lg-12"  id="formQuestionario">
 
                 {{ csrf_field() }}
 
@@ -92,18 +92,24 @@
 
         <div class="form-group col-sm-12 col-md-12 col-lg-12" >
 
-            <div class="form-group col-sm-12 col-md-12 col-lg-12" style="height: 400px">
+            <!-- EXIBE O GRÁFICO DO NÍVEL -->
+            <div class="form-group col-sm-12 col-md-12 col-lg-12" style="height: 350px">
                 <canvas id="myChart"></canvas>
             </div>
 
             <div class="form-group col-sm-12 col-md-12 col-lg-12"><br></div>
 
-            <div class="form-group col-sm-12 col-md-12 col-lg-12 text-center" id="divResultadoDescNivel"></div>
+            <!-- EXIBE A DESCRIÇÃO DO NÍVEL -->
+            <div class="form-group col-sm-12 col-md-12 col-lg-12" id="divResultadoDescNivel"></div>
 
             <div class="form-group col-sm-12 col-md-12 col-lg-12"><br></div>
 
+            <!-- EXIBE OS PONTOS FORTES -->
             <div class="form-group pontos" id="divPontosFortes"></div>
+
             <div class="form-group col-sm-12 col-md-12 col-lg-12"><br></div>
+
+            <!-- EXIBE OS PONTOS FRACOS -->
             <div class="form-group pontos" id="divPontosFracos"></div>
 
         </div>
@@ -194,7 +200,7 @@
 
                 //EXIBIR OS PONTOS FORTES E FRACOS
 
-                exibirPontosFortesFracos(radioResposta,$("#id_modelo_header_fk").val());
+                exibirPontosFortesFracos(checkPerguntas,radioResposta,$("#id_modelo_header_fk").val());
 
                 $('#divVisaoGeral').show();
 

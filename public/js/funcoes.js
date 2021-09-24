@@ -183,10 +183,10 @@ function exibirPerguntas(id_subarea){
 
 
                 html = html +
-                    "     <tr class='warning' style='font-weight: bold;' colspan='3'>" +
+                    "     <tr class='warning' style='font-weight: bold;line-height:10px;' colspan='3'>" +
                     "       <td width='1'><input  type='radio' class='respostas' name='resposta_" + qtd_perguntas + "' id='resposta_da_pergunta_" + indice + "'  value=" +item.id_resposta + ">" +
                     "       <label class='btn_opcoes' for='resposta_da_pergunta_" + indice + "'></label></td>" +
-                    "       <td style='padding-top: 20px;text-align: left'>"+ item.resposta +  "</td>" +
+                    "       <td style='text-align: left;'>"+ item.resposta +  "</td>" +
                     "       <td><input type='hidden' id='id_atividade' name = 'id_atividade[]' value='" + item.id_atividade +"'></td>" +
                     "     </tr>";
 
@@ -237,8 +237,8 @@ function exibirGrafico(resultado,exibirNivel) {
                 label: 'My First Dataset',
                 data: [valor_melhorar,valor_nivel],
                 backgroundColor: [
-                    '#FF665A',
-                    'rgb(75, 192, 192)',
+                    '#dc3545',
+                    '#28a745',
                 ]
             }]
         };
@@ -250,9 +250,9 @@ function exibirGrafico(resultado,exibirNivel) {
                 responsive: true,
                 maintainAspectRatio: false, //considerar o tamanho do grafico da div
                 legend: {
-                    position: 'top',
+                    position: 'right',
                     labels: {
-                        fontSize:20,
+                        fontSize:15,
                     }
                 },
                 plugins: {
@@ -263,7 +263,7 @@ function exibirGrafico(resultado,exibirNivel) {
                         color: '#fff',
                         font: {
                             weight: 'bold',
-                            size: 20,
+                            size: 18,
                         }
                     }
                 }
@@ -280,7 +280,7 @@ function exibirGrafico(resultado,exibirNivel) {
 
         //EXIBIR DESCRIÇÃO DO NÍVEL
         if (exibirNivel) {
-            var html = '<span class="text-justify"><h4>' + descricao_nivel + '</h4></span>';
+            var html = '<span class="text-justify"><h5>' + descricao_nivel + '</h5></span>';
             $('#divResultadoDescNivel').append(html);
             $('#divResultadoDescNivel').show();
         }
@@ -291,7 +291,7 @@ function exibirGrafico(resultado,exibirNivel) {
 
 }
 
-function exibirPontosFortesFracos(radioResposta,id_modelo_header) {
+function exibirPontosFortesFracos(perguntas,radioResposta,id_modelo_header) {
 
     $.ajax({
         url: "/diagnostico/consultarPontosFortesFracos",
@@ -299,6 +299,7 @@ function exibirPontosFortesFracos(radioResposta,id_modelo_header) {
         dataType: "json",
         data: {
             array_respostas: radioResposta,
+            array_perguntas: perguntas,
             id_modelo_header_fk:id_modelo_header,
         },
         success: function (pontos) {

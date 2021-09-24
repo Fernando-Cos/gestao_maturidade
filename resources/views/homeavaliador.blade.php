@@ -78,6 +78,7 @@
                     $gestor = 'subarea';
                 }
 
+                ;
                 $area_anterior=0;
 
                 foreach ($unidadeareas as $ua){
@@ -97,7 +98,7 @@
                             ($gestor=="area" && $area_gestor == $ua->id_area_fk) ||
                             ($gestor=="subarea" && $subarea_gestor == $ua->id_subarea_fk)
                         )
-                        && (\App\Models\tb_diagnostico_header::modeloCompleto($ua->id_area_fk,$ua->id_subarea_fk)==0)){
+                        && (\App\Models\tb_diagnostico_header::modeloCompleto($ua->id_area_fk,$ua->id_subarea_fk)==1)){
                         $estilo = "";//desabilita o ícone
 
                     } ?>

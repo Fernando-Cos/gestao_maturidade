@@ -14,6 +14,32 @@ class tb_diagnostico_header extends Model
 
 
 
+    protected $fillable = [
+        'id_unidade_fk',
+        'id_modelo_header_fk',
+        'nivel_maturidade',
+        'total_pontos',
+        'id_usuario_fk',
+    ];
+
+    public $messages = [
+        'id_unidade_fk.required' => 'O campo UNIDADE é obrigatório!',
+        'id_modelo_header_fk.required' => 'O campo MODELO é obrigatório!',
+        'id_usuario_fk.required' => 'O USUÁRIO é obrigatório!',
+    ];
+
+    public $rules =  [
+        'id_unidade_fk'=> 'required',
+        'id_modelo_header_fk'=> 'required',
+        'nivel_maturidade' => 'nullable',
+        'total_pontos' => 'nullable',
+        'id_usuario_fk'=> 'required',
+
+    ];
+
+
+
+
     //checa se o modelo contém a qtd de perguntas e respostas suficientes para ser utilizada
     public static function modeloCompleto($id_area,$id_subarea){
 
@@ -55,6 +81,34 @@ class tb_diagnostico_header extends Model
         }
     }
 
+    public static function salvarNivelArea ($id_unidade, $id_area, $valor_nivel_area){
+
+        $nivel = new tb_nivel_area();
+        $nivel->id_unidade_fk = $id_unidade;
+        $nivel->id_area_fk = $id_area;
+        $nivel->valor_nivel_area = $valor_nivel_area;
+
+        try{
+            return $nivel->save();
+        }
+        catch (\Exception $e){
+            return $e;
+        }
+    }
+
+    public static function salvarNivelUnidade ($id_unidade, $valor_nivel_unidade){
+
+        $nivel = new tb_nivel_unidade();
+        $nivel->id_unidade_fk = $id_unidade;
+        $nivel->valor_nivel_unidade = $valor_nivel_unidade;
+
+        try{
+            return $nivel->save();
+        }
+        catch (\Exception $e){
+            return $e;
+        }
+    }
 
 
 }
