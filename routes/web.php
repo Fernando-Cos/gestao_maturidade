@@ -27,9 +27,11 @@ Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'dashboard'
 
 
 //DIAGNÓSTICOS
-//Route::resource('diagnostico', 'TbDiagnosticoController');
+Route::get('/diagnostico/showIndices/{id_unidade}', [App\Http\Controllers\TbDiagnosticoController::class, 'showIndices'])->name('showIndices');
+Route::get('/diagnostico/showIndicesSubAreas/{id_unidade}', [App\Http\Controllers\TbDiagnosticoController::class, 'showIndicesSubAreas'])->name('showIndicesSubAreas');
+Route::get('/diagnostico/showUltimoDiagnostico/{id_unidade}', [App\Http\Controllers\TbDiagnosticoController::class, 'showUltimoDiagnostico'])->name('showUltimoDiagnostico');
 Route::post('/diagnostico/exibirPerguntas', [App\Http\Controllers\TbDiagnosticoController::class, 'exibirPerguntas'])->name('exibirPerguntas');
-Route::get('/diagnostico/atualizarIndices/{atualizar}/{id_area_atualizar?}', [App\Http\Controllers\TbDiagnosticoController::class,'atualizarIndices'])->name('atualizarIndices');
+Route::post('/diagnostico/atualizarIndices', [App\Http\Controllers\TbDiagnosticoController::class,'atualizarIndices'])->name('atualizarIndices');
 Route::post('/diagnostico/salvarRespostas', [App\Http\Controllers\TbDiagnosticoController::class,'salvarRespostas']);
 Route::post('/diagnostico/consultarPontosFortesFracos', [App\Http\Controllers\TbDiagnosticoController::class,'consultarPontosFortesFracos'])->name('consultarPontosFortesFracos');
 Route::post('/diagnostico/resultModeloArea',[App\Http\Controllers\TbDiagnosticoController::class,'resultModeloArea'])->name('resultModeloArea');

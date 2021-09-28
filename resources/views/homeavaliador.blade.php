@@ -126,8 +126,13 @@
 
         <div class="form-group col-sm-12 col-md-12 col-lg-12 text-center" style="padding:10px;margin-top:150px;clear: left;">
             <button class="btn btn-info btn-lg text-center" id="btnFazerDiagnostico" type="submit">Fazer Diagnóstio</button>
-            <a class="btn btn-success btn-lg"href="">
-                Visão Geral dos Índices
+             <a class="btn btn-success btn-lg"
+                   href="{{route('showIndices',$unidade->id)}}">
+                    Índice de Maturidade da Unidade
+             </a>
+            <a class="btn btn-warning btn-lg"
+               href="{{route('showIndicesSubAreas',$unidade->id)}}">
+                Índice de Maturidade das Sub Áreas
             </a>
         </div>
 

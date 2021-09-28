@@ -212,7 +212,7 @@ function exibirPerguntas(id_subarea){
     });
 }
 
-function exibirGrafico(resultado,exibirNivel) {
+function exibirGraficoPie(resultado,exibirNivel) {
 
     var descricao_nivel = '';
     var valor_nivel = 0;
@@ -250,9 +250,10 @@ function exibirGrafico(resultado,exibirNivel) {
                 responsive: true,
                 maintainAspectRatio: false, //considerar o tamanho do grafico da div
                 legend: {
-                    position: 'right',
+                    position: 'top',
                     labels: {
                         fontSize:15,
+                        color:'#293259',
                     }
                 },
                 plugins: {
@@ -342,7 +343,7 @@ function exibirPontosFortesFracos(perguntas,radioResposta,id_modelo_header) {
 
 }
 
-function graficoBarra(chart, label, dados, titulo) {
+function exibirGraficoBarra(chart, label, dados, titulo) {
 
 
     const labels = [
@@ -381,7 +382,7 @@ function graficoBarra(chart, label, dados, titulo) {
                 fontColor: '#0F689E',
                 text: titulo,
                 font: {
-                    size: 30
+                    size: 40
                 },
 
             },
@@ -440,7 +441,7 @@ function graficoBarra(chart, label, dados, titulo) {
 
 }
 
-function graficoPolar(chart, label, dados, titulo) {
+function exibirGraficoPolar(chart, label, dados, titulo) {
 
 
     const labels = [

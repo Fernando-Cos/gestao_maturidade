@@ -28,17 +28,24 @@ class TbDiagnosticoController extends Controller {
 
     }
 
-    public function show($id_unidade)
+    public function showIndices($id_unidade)
     {
 
-        return view('diagnostico.formularioProgressoNivel',compact('id_unidade'));
+        return view('diagnostico.formularioIndiceUnidade',compact('id_unidade'));
 
     }
 
-    public function atualizarIndices($atualizar,$id_area_atualizar)//qual area será atualizada com o novo índice
+    public function showIndicesSubAreas($id_unidade)
     {
 
-        return view('diagnostico.formularioVisaoGeral',compact('atualizar','id_area_atualizar'));
+        return view('diagnostico.formularioIndiceSubArea',compact('id_unidade'));
+
+    }
+
+    public function showUltimoDiagnostico($id_unidade)
+    {
+
+        return view('diagnostico.formularioUltimoDiagnostico',compact('id_unidade'));
 
     }
 
@@ -82,7 +89,7 @@ class TbDiagnosticoController extends Controller {
 
         $subarea = $request->subareas;
 
-        return view('diagnostico.formularioDiagnostico', compact('subarea'));
+        return view('diagnostico.formularioQuestionario', compact('subarea'));
 
 
     }
@@ -91,7 +98,7 @@ class TbDiagnosticoController extends Controller {
     //salva as respostas da unidade
     public function salvarRespostas(Request $request)
     {
-        //$this->authorize(ConstUtil::NOME_MODULO.':'.ConstUtil::PERMISSAO_ADMIN_GERAL);
+
 
         $diagnosticoheader = new tb_diagnostico_header();
         $diagnosticoheader->id_unidade_fk = $request->id_unidade_fk;
@@ -111,21 +118,21 @@ class TbDiagnosticoController extends Controller {
 
                 $diagnosticoheader->save();
 
-                DB::commit();
-
                 $total = 0;
                 $respostas = $request->array_respostas;
 
                 foreach ($request->array_perguntas as $key=>$value){        //salva as perguntas e respostas
+
                     $diagnosticobody = new tb_diagnostico_body();
                     $diagnosticobody->id_diagnostico_header_fk = $diagnosticoheader->id;
-                    $diagnosticobody->id_perguntas_fk = $value;
-                    $diagnosticobody->id_respostas_fk =  $respostas[$key];
+                    $diagnosticobody->id_pergunta_fk = $value;
+                    $diagnosticobody->id_resposta_fk =  $respostas[$key];
                     $diagnosticobody->save();
 
                     //total pontos de acordo com as respostas
                     $pontos_respostas = tb_respostas::findOrFail($respostas[$key]);
                     $total = $total + $pontos_respostas->nota;
+
                 }
 
                 //atualiza o total de pontos alcançados para a subarea
@@ -142,25 +149,40 @@ class TbDiagnosticoController extends Controller {
                 $diagnosticoheader2->nivel_maturidade = $nivel_maturidade;
                 $diagnosticoheader2->update();
 
-                //recupera a descrição do nível de maturidade de acordo com o calculado anteriormente
-                $sql = "SELECT descricao, cast(".$nivel_maturidade." as decimal(10,2)) as nivel_maturidade,
+                $salvou_nivel = tb_diagnostico_header::salvarNiveis($request->id_unidade_fk,$request->id_modelo_header_fk,$request->id_area_fk,$parametros->id);
+
+                if ($salvou_nivel){
+
+                    DB::commit();
+
+                    //recupera a descrição do nível de maturidade de acordo com o calculado anteriormente
+                    $sql = "SELECT descricao, cast(".$nivel_maturidade." as decimal(10,2)) as nivel_maturidade,
                                 (100.00 - cast(".$nivel_maturidade." as decimal(10,2))) as valor_melhorar ,
                                 ".$modelo_header->id_parametro_fk." as id_parametro_fk FROM tb_nivel_maturidade WHERE ".$nivel_maturidade." BETWEEN intervalo_ini AND intervalo_fim";
 
-                $descricao_nivel = DB::select($sql);
+                    $descricao_nivel = DB::select($sql);
+                    return response()->json($descricao_nivel);
 
+                }else{
 
-                DB::commit();
+                    $sql = "SELECT ".$salvou_nivel." as descricao, 0 as nivel_maturidade,
+                                0 as valor_melhorar , 0 as id_parametro_fk FROM tb_nivel_maturidade WHERE 0 BETWEEN intervalo_ini AND intervalo_fim";
 
-                return response()->json($descricao_nivel);
+                    $descricao_nivel = DB::select($sql);
+                    return response()->json($descricao_nivel);
+
+                }
 
             }
         }
 
         catch (\Exception $e)
         {
-            DB::rollback();
-            echo $e; //fallha ao salvar
+
+            $sql = "SELECT ".$e."  as descricao, 0 as nivel_maturidade,
+                                0 as valor_melhorar , 0 as id_parametro_fk FROM tb_nivel_maturidade WHERE 0 BETWEEN intervalo_ini AND intervalo_fim";
+
+            return response()->json($sql); //fallha ao salvar
         }
 
     }
@@ -170,6 +192,16 @@ class TbDiagnosticoController extends Controller {
     {
 
         $montar_id_respostas = '';
+        $montar_id_perguntas = '';
+
+        foreach ($request->array_perguntas as $key=>$value){        //salva as perguntas e respostas
+
+            if ($montar_id_perguntas == ''){
+                $montar_id_perguntas = $value;
+            }else{
+                $montar_id_perguntas .= ','.$value;
+            }
+        }
 
         foreach ($request->array_respostas as $key=>$value){        //salva as perguntas e respostas
 
@@ -180,19 +212,21 @@ class TbDiagnosticoController extends Controller {
             }
         }
 
+        $montar_id_perguntas = '('.$montar_id_perguntas.')';
         $montar_id_respostas = '('.$montar_id_respostas.')';
 
         //recupera a descrição do nível de maturidade de acordo com o calculado anteriormente
         $sql = "SELECT b.descricao as atividade, c.nota as nota_resposta,
-                              ( select DISTINCT maximo_pontos
+                              ( select maximo_pontos
                                           from tb_parametros, tb_modelo_header
                                          where tb_modelo_header.id = a.id_modelo_header_fk
                                            and tb_parametros.id = tb_modelo_header.id_parametro_fk) as ponto_maximo
                         FROM tb_modelo_body a, tb_atividades b, tb_respostas c
                         WHERE a.id_modelo_header_fk = " .$request->id_modelo_header_fk. "
-                        AND   a.id_respostas_fk in " .$montar_id_respostas. "
-                        AND   b.id = a.id_atividades_fk
-                        AND   c.id = a.id_respostas_fk
+                        AND   a.id_pergunta_fk in " .$montar_id_perguntas. "
+                        AND   a.id_resposta_fk in " .$montar_id_respostas. "
+                        AND   b.id = a.id_atividade_fk
+                        AND   c.id = a.id_resposta_fk
                         ORDER BY c.nota DESC";
 
         $pontosfortefracos = DB::select($sql);

@@ -49,6 +49,7 @@
     $unidade = \App\Models\tb_unidades::findOrFail($usuario->id_unidade_fk);
     $subareas = \App\Models\tb_subarea::findOrFail($subarea);
     $area = \App\Models\tb_area::findOrFail($subareas->id_area_fk);
+    $parametros = \App\Models\tb_parametros::parametrosAtuais();
 
     ?>
 
@@ -66,14 +67,14 @@
 
         <div class="form-group col-sm-12 col-md-12 col-lg-12 text-center">
 
-            <form class="form-group col-sm-12 col-md-12 col-lg-12"  id="formQuestionario">
+            <form class="form-group col-sm-12 col-md-12 col-lg-12"   id="formQuestionario">
 
                 {{ csrf_field() }}
 
                 <input type="hidden" name="id_usuario_fk" id="id_usuario_fk" value="{{Auth::user()->id}}">
                 <input type="hidden" name="id_subareas_fk" id="id_subareas_fk" value="{{$subareas->id}}">
                 <input type="hidden" name="id_unidade_fk" id="id_unidade_fk" value="{{$unidade->id}}">
-                <input type="hidden" name="id_parametro_fk" id="id_parametro_fk" value="">
+                <input type="hidden" name="id_area_fk" id="id_area_fk" value="{{$subareas->id_area_fk}}">
 
                 <!--onde são exibidas as perguntas e respostas!-->
                 <div class="form-group" id="divPerguntas"></div>
@@ -92,37 +93,37 @@
 
         <div class="form-group col-sm-12 col-md-12 col-lg-12" >
 
-            <!-- EXIBE O GRÁFICO DO NÍVEL -->
-            <div class="form-group col-sm-12 col-md-12 col-lg-12" style="height: 350px">
-                <canvas id="myChart"></canvas>
-            </div>
 
-            <div class="form-group col-sm-12 col-md-12 col-lg-12"><br></div>
+                    <!-- EXIBE O GRÁFICO DO NÍVEL -->
+                    <div class="form-group col-sm-12 col-md-12 col-lg-12" style="height: 350px">
+                        <canvas id="myChart"></canvas>
+                    </div>
 
-            <!-- EXIBE A DESCRIÇÃO DO NÍVEL -->
-            <div class="form-group col-sm-12 col-md-12 col-lg-12" id="divResultadoDescNivel"></div>
+                    <div class="form-group col-sm-12 col-md-12 col-lg-12"><br></div>
 
-            <div class="form-group col-sm-12 col-md-12 col-lg-12"><br></div>
+                    <!-- EXIBE A DESCRIÇÃO DO NÍVEL -->
+                    <div class="form-group col-sm-12 col-md-12 col-lg-12" id="divResultadoDescNivel"></div>
 
-            <!-- EXIBE OS PONTOS FORTES -->
-            <div class="form-group pontos" id="divPontosFortes"></div>
+                    <div class="form-group col-sm-12 col-md-12 col-lg-12"><br></div>
 
-            <div class="form-group col-sm-12 col-md-12 col-lg-12"><br></div>
+                    <!-- EXIBE OS PONTOS FORTES -->
+                    <div class="form-group pontos" id="divPontosFortes"></div>
 
-            <!-- EXIBE OS PONTOS FRACOS -->
-            <div class="form-group pontos" id="divPontosFracos"></div>
+                    <div class="form-group col-sm-12 col-md-12 col-lg-12"><br></div>
+
+                    <!-- EXIBE OS PONTOS FRACOS -->
+                    <div class="form-group pontos" id="divPontosFracos"></div>
 
         </div>
 
-        <div class="form-group form-footer text-center" id="divVisaoGeral">
-            <div>
-                <a class="btn btn-info btn-lg"
-                   href="{{route('atualizarIndices',array('Sim',$area->id))}}"><!--parametros: 1-informa se precisa atualizar os indices(Sim/Não);2-area que fez o diagnostico-->
-                    Próximo
-                </a>
-            </div>
-        </div>
-
+        <div class="form-group form-footer text-center" id="divHome">
+           <div>
+               <a class="btn btn-info btn-lg" style="background-color:#293259;border-color:#293259;"
+                  href="{{route('homeavaliador')}}">
+                   Home
+               </a>
+           </div>
+       </div>
 
     <script type="text/javascript">
 
@@ -131,7 +132,7 @@
             $(document).on("keydown", disableF5);
 
             $('#divBotoes').hide();
-            $('#divVisaoGeral').hide();
+            $('#divHome').hide();
             $('#divResultadoDescNivel').hide();
             $('#divPontosFortes').hide();
             $('#divPontosFracos').hide();
@@ -148,6 +149,7 @@
 
 
         $("#btnEnviarRespostas").click(function (e) {
+
 
             var qtd_perguntas = $('#qtd_perguntas').val();
 
@@ -168,6 +170,7 @@
                 alert('Responda todas as Perguntas!!');
                 return false;
             }else{
+                $(this).prop("disabled",true);
                 e.preventDefault();
                 $.ajaxSetup({
                     headers: {
@@ -184,28 +187,33 @@
                         id_modelo_header_fk:$("#id_modelo_header_fk").val(),
                         id_unidade_fk:$("#id_unidade_fk").val(),
                         id_usuario_fk:$("#id_usuario_fk").val(),
+                        id_area_fk:$("#id_area_fk").val(),
                     },
-                    success: function(resultado) {
+                    success: function(data) {
 
-                        $("#id_parametro_fk").val(resultado.id_parametro_fk);
-                        $('#divPerguntas').append('');
-                        $('#divPerguntas').hide();
-                        $('#divBotoes').hide();
+                        $.each(data, function (key, item) {
 
-                        //EXIBE O GRÁFICO E A DESCRIÇÃO DO NÍVEL
-                        exibirGrafico(resultado,true);
+                            $("#id_parametro_fk").val(item.id_parametro_fk);
+                            $('#divPerguntas').append('');
+                            $('#divPerguntas').hide();
+                            $('#divBotoes').hide();
+
+                            //EXIBE O GRÁFICO E A DESCRIÇÃO DO NÍVEL
+                            if (item.id_parametro_fk != 0) {
+                                exibirGraficoPie(data, true);
+                                exibirPontosFortesFracos(checkPerguntas, radioResposta, $("#id_modelo_header_fk").val());
+                                $('#divHome').show();
+                            } else {
+                                alert(item.descricao);
+                                location.reload(true);
+                            }
+
+                        });
+
                     }
                 });
 
-
-                //EXIBIR OS PONTOS FORTES E FRACOS
-
-                exibirPontosFortesFracos(checkPerguntas,radioResposta,$("#id_modelo_header_fk").val());
-
-                $('#divVisaoGeral').show();
-
-            }
-
+           }
 
         });
 
