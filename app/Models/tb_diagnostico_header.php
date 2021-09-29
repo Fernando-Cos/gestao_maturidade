@@ -156,22 +156,22 @@ class tb_diagnostico_header extends Model
 
             $pontos_alcancados_por_area = $total_alcancados_subarea;
 
-            $nivel_maturidade_por_area = ($pontos_alcancados_por_area/$pontos_maximo_por_area)*100;
+            $nivel_maturidade_por_area = round(($pontos_alcancados_por_area/$pontos_maximo_por_area)*100,2);
 
             //vai acumulando todos os pontos para gerar o da unidade
             $total_pontos_alcancados_unidade = $total_pontos_alcancados_unidade + $pontos_alcancados_por_area;
 
             //armazena os índices por cada área para salvar posteriormente (código mais abaixo)
-            array_push($nivel_area, ["id_area"=>$a->id_area_fk,"valor_nivel_area"=>round($nivel_maturidade_por_area,2)]);
+            array_push($nivel_area, ["id_area"=>$a->id_area_fk,"valor_nivel_area"=>$nivel_maturidade_por_area]);
 
         }
 
-        $nivel_maturidade_por_unidade = round(($total_pontos_alcancados_unidade/$total_maximo_pontos_unidade)*100,2).'%';
+        $nivel_maturidade_por_unidade = round(($total_pontos_alcancados_unidade/$total_maximo_pontos_unidade)*100,2);
 
         try {
 
             if ($qtd_subareas_com_diagnostico == $qtd_total_subareas)//atualiza o indice da unidade somente quando todas as sub áreas fizerem o diagnostico
-                $salvou_indice_unidade = \App\Models\tb_diagnostico_header::salvarNivelUnidade($id_unidade,round($nivel_maturidade_por_unidade,2));
+                $salvou_indice_unidade = \App\Models\tb_diagnostico_header::salvarNivelUnidade($id_unidade,$nivel_maturidade_por_unidade);
 
             foreach ($nivel_area as $key => $valor) {
                 if ($id_area == $valor['id_area']) {//$id_area_atualizar: atualiza somente a área que foi feito o diagóstivo

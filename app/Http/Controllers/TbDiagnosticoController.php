@@ -35,10 +35,10 @@ class TbDiagnosticoController extends Controller {
 
     }
 
-    public function showIndicesSubAreas($id_unidade)
+    public function showIndicesSubAreas($id_unidade,$id_area)
     {
 
-        return view('diagnostico.formularioIndiceSubArea',compact('id_unidade'));
+        return view('diagnostico.formularioIndiceSubArea',compact('id_unidade','id_area'));
 
     }
 
