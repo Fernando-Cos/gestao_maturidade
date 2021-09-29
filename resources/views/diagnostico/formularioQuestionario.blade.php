@@ -9,7 +9,8 @@
 
     /* não exibe as opções dos inputs radios para as respostas*/
     input[type="radio"] {
-       visibility: hidden;
+        visibility: hidden;
+
     }
 
     label {
@@ -36,7 +37,7 @@
         margin-left:0px;
         color: #16731C;
         font-weight: bold;
-        background-color: #F2F2F2;
+        background-color: #f8f9fa;
     }
 
     </style>
@@ -53,7 +54,7 @@
 
     ?>
 
-       <div class="form-group col-sm-12 col-md-12 col-lg-12 text-center" STYLE="color: #16731C">
+       <div class="form-group col-sm-12 col-md-12 col-lg-12 text-center font-weight-bold" style="color: #16731C">
            <h4>DIAGNÓSTICO</h4>
        </div>
 

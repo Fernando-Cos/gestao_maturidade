@@ -39,7 +39,7 @@ foreach($niveis_unidade as $i){
 ?>
 
 
-<div class="form-group col-sm-12 col-md-12 col-lg-12" style="width: 100%;background-color: #F2F2F2">
+<div class="form-group col-sm-12 col-md-12 col-lg-12 corFundoGrafico" >
     <h5 class="text-center font-weight-bold" style="padding-top: 10px;color: #539b27;">ÍNDICE DA UNIDADE</h5>
     <canvas id="myChart"></canvas>
 </div>
@@ -84,7 +84,7 @@ foreach ( $areas as  $a){//recupera os últimos índices de cada área
 
 ?>
 
-<div class="form-group col-sm-12 col-md-12 col-lg-12" style="width: 100%;background-color: #F2F2F2">
+<div class="form-group col-sm-12 col-md-12 col-lg-12 corFundoGrafico" >
     <canvas id={{"myChartArea"}}></canvas><br>
 </div>
 
@@ -124,7 +124,7 @@ foreach ( $areas as  $a){//recupera os últimos índices de cada área
         ?>
 
 
-            <div class="form-group col-sm-12 col-md-12 col-lg-12 text-right" style="width: 100%;background-color: #F2F2F2">
+            <div class="form-group col-sm-12 col-md-12 col-lg-12 text-right corFundoGrafico" >
                 <a href="{{url('/diagnostico/showIndicesSubAreas/'.$id_unidade.'/'.$a->id_area_fk)}}" ><i class="fas fa-chart-bar" style="color: #3abc0b" title="Detalhes" ></i></a>
                 <canvas id={{"myChart".$a->id_area_fk}}></canvas>
             </div>
@@ -149,7 +149,7 @@ foreach ( $areas as  $a){//recupera os últimos índices de cada área
 <div class="form-group col-sm-12 col-md-12 col-lg-12 text-center" style="padding:10px;">
     <a class="btn btn-info btn-lg" style="background-color:#293259;border-color:#293259;"
        href="{{url('homeavaliador')}}">
-        HOME
+        Home
     </a>
 </div>
 

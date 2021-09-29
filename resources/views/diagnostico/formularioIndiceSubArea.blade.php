@@ -60,7 +60,7 @@ foreach($subareas as $a){
         if (count($resultado) > 0){//exibe somente os gráficos com diagnostico
             $count_subareas = $count_subareas + 1; //conta quantas sub áreas já fizeram o diagnóstico para saber se ainda falta algum que não fez
         ?>
-            <div class="form-group text-center" style="background-color: #F2F2F2;padding: 10px">
+            <div class="form-group text-center corFundoGrafico" style="padding: 10px">
                 <img src="{{ asset('storage/imagens/'.$subareas->imagem)}}" width="50" height="50" >
                 <h5>{{strtoupper($subareas->nome)}}</h5>
                 <canvas id="{{'myChart'.$subareas->id}}"></canvas>
@@ -90,10 +90,10 @@ foreach($subareas as $a){
 <div class="form-group col-sm-12 col-md-12 col-lg-12 text-center" style="padding:10px;">
     <a class="btn btn-info btn-lg" style="background-color:#293259;border-color:#293259;"
        href="{{url('homeavaliador')}}">
-        HOME
+        Home
     </a>
-    <a class="btn btn-success btn-lg" href="{{route('showIndices',$unidade->id)}}">
-        VOLTAR
+    <a class="btn btn-default btn-lg" href="{{route('showIndices',$unidade->id)}}">
+        Voltar
     </a>
 </div>
 

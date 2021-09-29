@@ -52,7 +52,7 @@ function exibirPerguntas(id_subarea){
         },
         success: function(data) {
 
-            html = "<table class='table table-striped' style='font-size: 12px;width: 104%;margin-left:-20px'>";
+            html = "<table class='table' style='font-size: 12px;width: 104%;margin-left:-20px'>";
 
             var pergunta_anterior = "";
             var valorheader = "";
@@ -72,7 +72,7 @@ function exibirPerguntas(id_subarea){
                     qtd_perguntas = qtd_perguntas + 1;
 
                     html = html +
-                        "     <tr class='info' style='font-weight: bold;'  colspan='3'>" +
+                        "     <tr class='info' style='background-color:#F0FFF0;font-weight: bold;'  colspan='3'>" +
                         "       <td></td>" +
                         "       <td style='display: none'><input type='checkbox' class='perguntas' name='pergunta_id'  value='" +item.id_pergunta + "' checked></td>" +
                         "       <td class='text-center descpergunta'>" + item.pergunta + "</td>" +
@@ -85,7 +85,7 @@ function exibirPerguntas(id_subarea){
                     "     <tr class='warning' style='font-weight: bold;line-height:10px;' colspan='3'>" +
                     "       <td width='1'><input  type='radio' class='respostas' name='resposta_" + qtd_perguntas + "' id='resposta_da_pergunta_" + indice + "'  value=" +item.id_resposta + ">" +
                     "       <label class='btn_opcoes' for='resposta_da_pergunta_" + indice + "'></label></td>" +
-                    "       <td style='text-align: left;'>"+ item.resposta +  "</td>" +
+                    "       <td class='descresposta' style='text-align: left;'>"+ item.resposta +  "</td>" +
                     "       <td><input type='hidden' id='id_atividade' name = 'id_atividade[]' value='" + item.id_atividade +"'></td>" +
                     "     </tr>";
 
@@ -347,8 +347,8 @@ function exibirGraficoPolar(chart, label, dados, titulo) {
                 '#36a2eb',
                 '#4bc0c0',
                 '#c0c2d0',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(201, 203, 207, 0.2)'
+                '#ebe0ff',
+                '#CB20F6'
             ],
             data: dados,
         }]

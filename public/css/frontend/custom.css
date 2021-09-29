@@ -73,11 +73,11 @@ body{
     font-size: 15px;
     font-weight: 200;
     padding: 8px;
-    background-color: #B8D9A0;
-    -webkit-box-shadow: 1px 1px 10px 0 #B8D9A0;
-    -moz-box-shadow: 1px 1px 10px 0 #B8D9A0;
-    box-shadow: 1px 1px 10px 0 #B8D9A0;
-    text-shadow: 1px 1px 10px #B8D9A0;
+    background-color: #F0FFF0;
+    -webkit-box-shadow: 1px 1px 10px 0 #F0FFF0;
+    -moz-box-shadow: 1px 1px 10px 0 #F0FFF0;
+    box-shadow: 1px 1px 10px 0 #F0FFF0;
+    text-shadow: 1px 1px 10px #F0FFF0;
     border: solid #16731C 1px;
     text-decoration: none;
     display: inline-block;
@@ -116,6 +116,9 @@ body{
     max-height:2000px;
     overflow:auto;
 
+}
+.corFundoGrafico{
+    background-color: #f8f9fa;
 }
 
 

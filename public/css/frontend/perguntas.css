@@ -12,11 +12,11 @@ table,tr {
 .descpergunta{
     color: #293259;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 15px;
     text-align: left;
 }
 .descresposta{
-    color: #5f3f3f;
+    color: #293259;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 14px;
 }
