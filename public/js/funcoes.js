@@ -16,107 +16,6 @@ $(document).ready(function() {
 
 });
 
-function somarDataComDias(data_inicial,qtd_dias) {
-
-    var parts = data_inicial.split("/");
-    var data = new Date(parts[2], parts[1] - 1, parts[0]);
-    data.setDate(data.getDate() + parseInt(qtd_dias));
-    var novaData = data.toLocaleDateString("pt-BR");
-
-    return novaData;
-
-}
-
-function Idade() {
-
-    var hoje = new Date();
-    var datanascimento = $('#data_nascimento').val();
-
-    var arrayData =  datanascimento.split("/");
-
-    var retorno = "#ERR#";
-
-    if (arrayData.length == 3) {
-        // Decompoem a data em array
-        var ano = parseInt( arrayData[2] );
-        var mes = parseInt( arrayData[1] );
-        var dia = parseInt( arrayData[0] );
-
-        // Valida a data informada
-        if ( arrayData[0] > 31 || arrayData[1] > 12 ) {
-            return retorno;
-        }
-
-        ano = ( ano.length == 2 ) ? ano += 1900 : ano;
-
-        // Subtrai os anos das duas datas
-        var idade = ( hoje.getYear()+1900 ) - ano;
-
-        // Subtrai os meses das duas datas
-        var meses = ( hoje.getMonth() + 1 ) - mes;
-
-        // Se meses for menor que 0 entao nao cumpriu anos. Se for maior sim ja cumpriu
-        idade = ( meses < 0 ) ? idade - 1 : idade;
-
-        meses = ( meses < 0 ) ? meses + 12 : meses;
-
-        retorno = ( idade + " a " + meses + " m" );
-    }
-
-    $('#idade').val(retorno);
-}
-
-function consultarCep (cep) {
-
-  //Verifica se campo cep possui valor informado.
-  if (cep != "") {
-
-    //Expressão regular para validar o CEP.
-    var validacep = /^[0-9]{8}$/;
-
-    //Valida o formato do CEP.
-    if(validacep.test(cep)) {
-
-      //Preenche os campos com "..." enquanto consulta webservice.
-      $("#endereco").val("...");
-      $("#numero").val("...");
-      $("#complemento").val("...");
-      $("#bairro").val("...");
-      $("#cidade").val("...");
-      $("#uf").val("...");
-
-
-      //Consulta o webservice viacep.com.br/
-      $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
-
-        if (!("erro" in dados)) {
-          //Atualiza os campos com os valores da consulta.
-          $("#endereco").val(dados.logradouro);
-          $("#numero").val('');
-          $("#complemento").val('');
-          $("#bairro").val(dados.bairro);
-          $("#cidade").val(dados.localidade);
-          $("#uf").val(dados.uf);
-        } //end if.
-        else {
-          //CEP pesquisado não foi encontrado.
-          limpa_campos_endereco();
-          alert("CEP não encontrado.");
-        }
-      });
-    } //end if.
-    else {
-      //cep é inválido.
-      limpa_campos_endereco();
-      alert("Formato de CEP inválido.");
-    }
-  } //end if.
-  else {
-    //cep sem valor, limpa formulário.
-    limpa_campos_endereco();
-  }
-
-}
 
 //faz a comparação entre emails digitados pelo usuário
 function confirmarEmail (email1,email2) {
@@ -361,12 +260,8 @@ function exibirGraficoBarra(chart, label, dados, titulo) {
             borderColor: "#0F689E",
             size: 20,
             borderWidth: 1,
-            fillColor: convertHexToRGBA("EBC50C",20),
-            strokeColor: convertHexToRGBA("EBC50C",20),
-            pointColor: convertHexToRGBA("EBC50C",20),
             pointStrokeColor: "#fff",
             pointHighlightFill: "#fff",
-            pointHighlightStroke: convertHexToRGBA("EBC50C",20),
             pointStyle: 'rectRot',
             data: dados,
         }]
@@ -434,11 +329,6 @@ function exibirGraficoBarra(chart, label, dados, titulo) {
         config
     )
 
-
-    function convertHexToRGBA(n, t) {
-        return n = n.replace("#", ""), r = parseInt(n.substring(0, 2), 16), g = parseInt(n.substring(2, 4), 16), b = parseInt(n.substring(4, 6), 16), result = "rgba(" + r + "," + g + "," + b + "," + t / 100 + ")"
-    }
-
 }
 
 function exibirGraficoPolar(chart, label, dados, titulo) {
@@ -452,11 +342,11 @@ function exibirGraficoPolar(chart, label, dados, titulo) {
         datasets: [{
             label: 'ANÁLISE POR ÁREA',
             backgroundColor: [
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(255, 205, 86, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
+                '#fe819d',
+                '#ffce56',
+                '#36a2eb',
+                '#4bc0c0',
+                '#c0c2d0',
                 'rgba(153, 102, 255, 0.2)',
                 'rgba(201, 203, 207, 0.2)'
             ],
