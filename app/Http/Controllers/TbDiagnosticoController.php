@@ -42,10 +42,45 @@ class TbDiagnosticoController extends Controller {
 
     }
 
-    public function showUltimoDiagnostico($id_unidade)
+    public function showDiagnosticos($id_unidade,$permissao,$usuario)
     {
 
-        return view('diagnostico.formularioUltimoDiagnostico',compact('id_unidade'));
+
+        if ($permissao=='unidade'){
+            $sql="SELECT a.id, c.nome as area, d.nome as subarea, a.nivel_maturidade, DATE_FORMAT(a.created_at,'%d/%m/%Y') as data
+                    FROM tb_diagnostico_header a , tb_modelo_header b, tb_area c, tb_subarea d
+                  WHERE a.id_unidade_fk=".$id_unidade."
+                    AND b.id = a.id_modelo_header_fk
+                    AND c.id = b.id_area_fk
+                    AND d.id = b.id_subarea_fk
+                 ORDER BY c.nome,a.id desc";
+
+        }elseif ($permissao=='area'){
+            $sql="SELECT a.id, c.nome as area, d.nome as subarea, a.nivel_maturidade, DATE_FORMAT(a.created_at,'%d/%m/%Y') as data
+                    FROM tb_diagnostico_header a , tb_modelo_header b, tb_area c, tb_subarea d
+                  WHERE a.id_unidade_fk=".$id_unidade."
+                    AND b.id = a.id_modelo_header_fk
+                    AND b.id_area_fk = ".$usuario->id_area_fk."
+                    AND c.id = b.id_area_fk
+                    AND d.id = b.id_subarea_fk
+                 ORDER BY c.nome,a.id desc";
+
+        }elseif ($permissao=='subarea'){
+            $sql="SELECT a.id, c.nome as area, d.nome as subarea, a.nivel_maturidade, DATE_FORMAT(a.created_at,'%d/%m/%Y')  as data
+                    FROM tb_diagnostico_header a , tb_modelo_header b, tb_area c, tb_subarea d
+                  WHERE a.id_unidade_fk=".$id_unidade."
+                    AND b.id = a.id_modelo_header_fk
+                    AND b.id_area_fk = ".$usuario->id_area_fk."
+                    AND c.id = b.id_area_fk
+                    AND b.id_subarea_fk = ".$usuario->id_subarea_fk."
+                    AND d.id = b.id_subarea_fk
+                 ORDER BY c.nome,a.id desc";
+
+        }
+
+        $diagnosticos = DB::select($sql);
+
+        return view('diagnostico.formularioDiagnosticos',compact('diagnosticos'));
 
     }
 
@@ -54,9 +89,12 @@ class TbDiagnosticoController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function showDiagnosticoIndividual($id_diagnostico)
     {
-       //
+        $diagnostico = tb_diagnostico_header::findOrFail($id_diagnostico);
+        $modelodiagnostico = tb_modelo_header::findOrFail($diagnostico->id_modelo_header_fk);
+
+        return view('diagnostico.formularioDiagnosticoIndividual',compact('diagnostico','modelodiagnostico'));
     }
 
     public function resultDiagnostico()

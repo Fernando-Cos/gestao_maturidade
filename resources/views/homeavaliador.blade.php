@@ -125,11 +125,16 @@
 
 
         <div class="form-group col-sm-12 col-md-12 col-lg-12 text-center" style="padding:10px;margin-top:150px;clear: left;">
-            <button class="btn btn-info btn-lg text-center" id="btnFazerDiagnostico" type="submit"><i class="fa fa-question"></i> Diagnóstio</button>
+            <button class="btn btn-info btn-lg text-center" id="btnFazerDiagnostico" type="submit"><i class="fa fa-question"></i> Diagnóstico</button>
 
-            <a class="btn btn-success btn-lg" href="{{route('showIndices',$unidade->id)}}"><i class="fas fa-chart-bar"></i>
+            <a class="btn btn-warning btn-lg" href="{{route('showIndices',$unidade->id)}}"><i class="fas fa-chart-bar"></i>
                     Índices
-             </a>
+            </a>
+
+            <a class="btn btn-success btn-lg" href="{{route('showDiagnosticos',array($unidade->id,$gestor,$usuario))}}"><i class="fas fa-check"></i>
+                Diagnósticos
+            </a>
+
         </div>
 
     </form>

@@ -29,7 +29,8 @@ Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'dashboard'
 //DIAGNÓSTICOS
 Route::get('/diagnostico/showIndices/{id_unidade}', [App\Http\Controllers\TbDiagnosticoController::class, 'showIndices'])->name('showIndices');
 Route::get('/diagnostico/showIndicesSubAreas/{id_unidade}/{id_area}', [App\Http\Controllers\TbDiagnosticoController::class, 'showIndicesSubAreas'])->name('showIndicesSubAreas');
-Route::get('/diagnostico/showUltimoDiagnostico/{id_unidade}', [App\Http\Controllers\TbDiagnosticoController::class, 'showUltimoDiagnostico'])->name('showUltimoDiagnostico');
+Route::get('/diagnostico/showDiagnosticos/{id_unidade}/{permissao}/{usuario}', [App\Http\Controllers\TbDiagnosticoController::class, 'showDiagnosticos'])->name('showDiagnosticos');
+Route::get('/diagnostico/showDiagnosticoIndividual/{id_diagnostico_header_fk}', [App\Http\Controllers\TbDiagnosticoController::class, 'showDiagnosticoIndividual'])->name('showDiagnosticoIndividual');
 Route::post('/diagnostico/exibirPerguntas', [App\Http\Controllers\TbDiagnosticoController::class, 'exibirPerguntas'])->name('exibirPerguntas');
 Route::post('/diagnostico/atualizarIndices', [App\Http\Controllers\TbDiagnosticoController::class,'atualizarIndices'])->name('atualizarIndices');
 Route::post('/diagnostico/salvarRespostas', [App\Http\Controllers\TbDiagnosticoController::class,'salvarRespostas']);

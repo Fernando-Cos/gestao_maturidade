@@ -113,6 +113,7 @@ function exibirPerguntas(id_subarea){
 
 function exibirGraficoPie(resultado,exibirNivel) {
 
+
     var descricao_nivel = '';
     var valor_nivel = 0;
     var valor_melhorar = 0;
@@ -180,6 +181,7 @@ function exibirGraficoPie(resultado,exibirNivel) {
 
         //EXIBIR DESCRIÇÃO DO NÍVEL
         if (exibirNivel) {
+            alert(descricao_nivel);
             var html = '<span class="text-justify"><h5>' + descricao_nivel + '</h5></span>';
             $('#divResultadoDescNivel').append(html);
             $('#divResultadoDescNivel').show();
